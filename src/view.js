@@ -1,5 +1,4 @@
 function render(elements, state) {
-  debugger;
   switch (state.form.status) {
     case 'filling':
       break;
@@ -19,6 +18,9 @@ function render(elements, state) {
       elements.feedback.textContent = state.form.error;
       elements.input.style.borderColor = 'red';
       break;
+
+    default:
+      throw new Error('Unknown status');
   }
 }
 
