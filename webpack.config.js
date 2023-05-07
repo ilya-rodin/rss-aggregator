@@ -10,7 +10,7 @@ export default {
   },
   watchOptions: {
     ignored: '/node_modules/',
-    poll: 1000, // Necessary for auto-reload w/ WSL
+    poll: 1000,
   },
   module: {
     rules: [
