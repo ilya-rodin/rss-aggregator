@@ -1,22 +1,32 @@
-function render(elements, state) {
+function setFeedbackError(errorCode, elements, i18n) {
+  const { feedback, input } = elements;
+
+  input.classList.add('is-invalid');
+  feedback.classList.add('text-danger');
+  feedback.classList.remove('text-success');
+  feedback.textContent = i18n.t(`errors.${errorCode}`);
+}
+
+function setFeedbackSuccess(elements, i18n) {
+  const { feedback, input } = elements;
+
+  input.classList.remove('is-invalid');
+  feedback.classList.remove('text-danger');
+  feedback.classList.add('text-success');
+  feedback.textContent = i18n.t('success');
+}
+
+function render(elements, state, i18n) {
   switch (state.form.status) {
     case 'filling':
       break;
 
     case 'success':
-      elements.feedback.classList.remove('text-danger');
-      elements.feedback.classList.add('text-success');
-      elements.feedback.textContent = 'RSS успешно загружен';
-      elements.input.style.borderColor = '';
-      elements.input.focus();
-      elements.form.reset();
+      setFeedbackSuccess(elements, i18n);
       break;
 
     case 'error':
-      elements.feedback.classList.remove('text-success');
-      elements.feedback.classList.add('text-danger');
-      elements.feedback.textContent = state.form.error;
-      elements.input.style.borderColor = 'red';
+      setFeedbackError(state.form.error, elements, i18n);
       break;
 
     default:

@@ -1,25 +1,20 @@
 import * as yup from 'yup';
+import i18next from 'i18next';
 import onChange from 'on-change';
+import resources from './locales/index.js';
+import locale from './locales/locale.js';
 import render from './view.js';
 
-yup.setLocale({
-  string: {
-    url: 'Ссылка должна быть валидным URL',
-  },
-  mixed: {
-    notOneOf: 'RSS уже существует'
-  }
-});
-
 function validateUrl(url, otherUrls) {
-  const schema = yup.string()
+  const schema = yup
+    .string()
     .trim()
     .url()
     .notOneOf(otherUrls);
   return schema.validate(url);
 }
 
-function runApp() {
+function runApp(i18n) {
   const state = {
     form: {
       status: 'filling',
@@ -35,7 +30,7 @@ function runApp() {
     submitButton: document.querySelector('button[type="submit"]'),
   };
 
-  const watchedState = onChange(state, () => render(elements, state));
+  const watchedState = onChange(state, () => render(elements, state, i18n));
 
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -54,4 +49,15 @@ function runApp() {
   });
 }
 
-export default runApp;
+export default () => {
+  const i18n = i18next.createInstance();
+
+  i18n.init({
+    lng: 'ru',
+    resources,
+  })
+    .then(() => {
+      yup.setLocale(locale);
+      runApp(i18n);
+    });
+};
