@@ -134,7 +134,7 @@ function handleFormError(elements, errorCode, i18nT) {
   input.classList.add('is-invalid');
   feedback.classList.add('text-danger');
   feedback.classList.remove('text-success');
-  feedback.textContent = i18nT(`errors.${errorCode}`);
+  feedback.textContent = i18nT(`errors.${errorCode.replace(' ', '')}`);
   resetForm(form);
 }
 

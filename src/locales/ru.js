@@ -6,7 +6,7 @@ export default {
       existingFeed: 'RSS уже существует',
       parsingError: 'Ресурс не содержит валидный RSS',
       emptyForm: 'Не должно быть пустым',
-      networkError: 'Ошибка сети',
+      NetworkError: 'Ошибка сети',
       defaultError: 'Что-то пошло не так...',
     },
     preview: 'Просмотр',
