@@ -154,8 +154,8 @@ function handleFormSuccess(elements, i18nT) {
   resetForm(form);
 }
 
-function handleFormStatus(elements, state, i18nT) {
-  switch (state.form.status) {
+function handleFormStatus(elements, state, formState, i18nT) {
+  switch (formState) {
     case 'filling':
       handleFormFilling(elements);
       break;
@@ -179,6 +179,10 @@ function handleFormStatus(elements, state, i18nT) {
 
 const render = (elements, initialState, i18nT) => (path, value) => {
   switch (path) {
+    case 'form.state':
+      handleFormStatus(elements, initialState, value, i18nT);
+      break;
+
     case 'content.feeds':
       renderFeeds(elements, initialState, i18nT);
       break;
@@ -193,8 +197,7 @@ const render = (elements, initialState, i18nT) => (path, value) => {
       break;
 
     default:
-      handleFormStatus(elements, initialState, i18nT);
-      break;
+      throw new Error('unknown path');
   }
 };
 
