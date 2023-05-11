@@ -41,7 +41,10 @@ function refreshFeeds(state) {
       if (newPosts.length > 0) {
         addPosts(state, newPosts);
       }
-    });
+    })
+      .catch((error) => {
+        state.form.error = error.message;
+      });
   });
 
   Promise.all(promises).finally(() => {
