@@ -124,7 +124,12 @@ function handleFormSending(elements) {
 }
 
 function handleFormError(errorCode, elements, i18nT) {
-  const { feedback, input, form } = elements;
+  const {
+    feedback, btn, input, form
+  } = elements;
+
+  btn.disabled = false;
+  input.disabled = false;
 
   input.classList.add('is-invalid');
   feedback.classList.add('text-danger');
