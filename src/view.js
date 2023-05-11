@@ -123,7 +123,7 @@ function handleFormSending(elements) {
   input.disabled = true;
 }
 
-function handleFormError(errorCode, elements, i18nT) {
+function handleFormError(elements, errorCode, i18nT) {
   const {
     feedback, btn, input, form
   } = elements;
@@ -154,7 +154,7 @@ function handleFormSuccess(elements, i18nT) {
   resetForm(form);
 }
 
-function handleFormStatus(elements, state, formState, i18nT) {
+function handleFormStatus(elements, initialState, formState, i18nT) {
   switch (formState) {
     case 'filling':
       handleFormFilling(elements);
@@ -169,11 +169,11 @@ function handleFormStatus(elements, state, formState, i18nT) {
       break;
 
     case 'failed':
-      handleFormError(state.form.error, elements, i18nT);
+      handleFormError(elements, initialState.form.error, i18nT);
       break;
 
     default:
-      throw new Error('Unknown status');
+      break;
   }
 }
 
