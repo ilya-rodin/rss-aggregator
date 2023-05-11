@@ -180,6 +180,7 @@ function handleFormStatus(elements, state, formState, i18nT) {
 const render = (elements, initialState, i18nT) => (path, value) => {
   switch (path) {
     case 'form.status':
+    case 'form.error':
       handleFormStatus(elements, initialState, value, i18nT);
       break;
 
