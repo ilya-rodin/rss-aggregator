@@ -87,6 +87,8 @@ function renderPosts(elements, state, i18nT) {
     btn.type = 'button';
     btn.classList.add('btn', 'btn-outline-primary', 'btn-sm');
     btn.setAttribute('data-id', post.id);
+    btn.setAttribute('data-bs-toggle', 'modal');
+    btn.setAttribute('data-bs-target', '#modal');
     btn.textContent = i18nT('preview');
 
     li.append(link, btn);
@@ -95,6 +97,15 @@ function renderPosts(elements, state, i18nT) {
 
   card.append(cardBody, cardList);
   posts.append(card);
+}
+
+function renderModal(elements, state, modalId) {
+  const { modal } = elements;
+  const post = state.content.posts.find(({ id }) => id === modalId);
+  const { title, description, link } = post;
+  modal.title.textContent = title;
+  modal.body.textContent = description;
+  modal.btn.href = link;
 }
 
 function handleFormFilling(elements) {
@@ -161,24 +172,24 @@ function handleFormStatus(elements, state, i18nT) {
   }
 }
 
-const render = (elements, state, i18nT) => (path) => {
+const render = (elements, initialState, i18nT) => (path, value) => {
   switch (path) {
-    case 'form.error':
-    case 'form.status':
-      handleFormStatus(elements, state, i18nT);
-      break;
-
     case 'content.feeds':
-      renderFeeds(elements, state, i18nT);
+      renderFeeds(elements, initialState, i18nT);
       break;
 
     case 'content.posts':
     case 'ui.visitedIds':
-      renderPosts(elements, state, i18nT);
+      renderPosts(elements, initialState, i18nT);
+      break;
+
+    case 'ui.modalId':
+      renderModal(elements, initialState, value);
       break;
 
     default:
-      throw new Error('unknown path');
+      handleFormStatus(elements, initialState, i18nT);
+      break;
   }
 };
 

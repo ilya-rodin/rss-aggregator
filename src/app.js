@@ -82,6 +82,12 @@ function runApp() {
         btn: document.querySelector('button[type="submit"]'),
         posts: document.querySelector('.posts'),
         feeds: document.querySelector('.feeds'),
+        modal: {
+          container: document.querySelector('.modal'),
+          title: document.querySelector('.modal-title'),
+          body: document.querySelector('.modal-body'),
+          btn: document.querySelector('.full-article'),
+        },
       };
 
       yup.setLocale({
@@ -137,6 +143,14 @@ function runApp() {
         if (id && !initialState.ui.visitedIds.includes(id)) {
           watchedState.ui.visitedIds.push(id);
         }
+      });
+
+      elements.modal.container.addEventListener('show.bs.modal', (e) => {
+        const { id } = e.relatedTarget.dataset;
+        if (!initialState.ui.visitedIds.includes(id)) {
+          watchedState.ui.visitedIds.push(id);
+        }
+        watchedState.ui.modalId = id;
       });
     });
 }
