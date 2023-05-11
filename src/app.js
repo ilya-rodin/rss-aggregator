@@ -33,15 +33,17 @@ function refreshFeeds(state) {
   const promises = feeds.map((feed) => {
     const { link } = feed;
     const allOriginsURL = getAllOriginsURL(link);
-    return axios.get(allOriginsURL).then((response) => {
-      const rss = response.data.contents;
-      const { posts } = parse(rss);
-      const oldLinks = oldPosts.map((post) => post.link);
-      const newPosts = posts.filter((post) => !oldLinks.includes(post.link));
-      if (newPosts.length > 0) {
-        addPosts(state, newPosts);
-      }
-    })
+    return axios
+      .get(allOriginsURL)
+      .then((response) => {
+        const rss = response.data.contents;
+        const { posts } = parse(rss);
+        const oldLinks = oldPosts.map((post) => post.link);
+        const newPosts = posts.filter((post) => !oldLinks.includes(post.link));
+        if (newPosts.length > 0) {
+          addPosts(state, newPosts);
+        }
+      })
       .catch((error) => {
         state.form.error = error.message;
       });
@@ -100,7 +102,7 @@ function runApp() {
 
       const watchedState = onChange(
         initialState,
-        render(elements, initialState, i18nT)
+        render(elements, initialState, i18nT),
       );
 
       refreshFeeds(watchedState);

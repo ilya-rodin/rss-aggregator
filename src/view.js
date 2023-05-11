@@ -69,14 +69,16 @@ function renderPosts(elements, state, i18nT) {
       'justify-content-between',
       'align-items-start',
       'border-0',
-      'border-end-0',
+      'border-end-0'
     );
 
     const link = document.createElement('a');
     link.href = post.link;
-    link.classList.add(state.ui.visitedIds.includes(post.id)
-      ? ('fw-normal', 'link-secondary')
-      : 'fw-bold');
+    link.classList.add(
+      state.ui.visitedIds.includes(post.id)
+        ? ('fw-normal', 'link-secondary')
+        : 'fw-bold'
+    );
 
     link.setAttribute('data-id', post.id);
     link.target = '_blank';
@@ -125,7 +127,7 @@ function handleFormSending(elements) {
 
 function handleFormError(elements, errorCode, i18nT) {
   const {
-    feedback, btn, input, form
+    feedback, btn, input, form,
   } = elements;
 
   btn.disabled = false;
@@ -140,7 +142,7 @@ function handleFormError(elements, errorCode, i18nT) {
 
 function handleFormSuccess(elements, i18nT) {
   const {
-    feedback, btn, input, form
+    feedback, btn, input, form,
   } = elements;
 
   btn.disabled = false;
