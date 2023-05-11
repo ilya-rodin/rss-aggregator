@@ -132,8 +132,8 @@ function runApp() {
             watchedState.form.status = 'finished';
           })
           .catch((error) => {
-            const errorKey = error.message;
-            watchedState.form.error = errorKey;
+            const errorCode = error.message;
+            watchedState.form.error = errorCode;
             watchedState.form.status = 'failed';
           });
       });
