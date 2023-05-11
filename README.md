@@ -1,4 +1,4 @@
-# [RSS Aggregator](frontend-project-11-ilya-rodin.vercel.app)
+# [RSS Aggregator](https://frontend-project-11-ilya-rodin.vercel.app/)
 
 [![Actions Status](https://github.com/ilya-rodin/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/ilya-rodin/frontend-project-11/actions)
 
