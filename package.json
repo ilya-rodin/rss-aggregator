@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/ilya-rodin/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/ilya-rodin/frontend-project-11/actions)",
+  "description": "Web application for convenient aggregation and reading RSS feeds",
   "main": "index.js",
   "type": "module",
   "scripts": {
