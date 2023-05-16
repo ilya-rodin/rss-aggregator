@@ -1,4 +1,4 @@
-import { init } from 'i18next';
+/* eslint object-curly-newline: "off" */
 
 function resetForm(form) {
   form.reset();
