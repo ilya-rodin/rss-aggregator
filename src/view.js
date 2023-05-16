@@ -1,3 +1,5 @@
+import { init } from 'i18next';
+
 function resetForm(form) {
   form.reset();
   form.focus();
@@ -69,7 +71,7 @@ function renderPosts(elements, state, i18nT) {
       'justify-content-between',
       'align-items-start',
       'border-0',
-      'border-end-0',
+      'border-end-0'
     );
 
     const link = document.createElement('a');
@@ -77,7 +79,7 @@ function renderPosts(elements, state, i18nT) {
     link.classList.add(
       state.ui.visitedIds.includes(post.id)
         ? ('fw-normal', 'link-secondary')
-        : 'fw-bold',
+        : 'fw-bold'
     );
 
     link.setAttribute('data-id', post.id);
@@ -126,9 +128,7 @@ function handleFormSending(elements) {
 }
 
 function handleFormError(elements, errorCode, i18nT) {
-  const {
-    feedback, btn, input, form,
-  } = elements;
+  const { feedback, btn, input } = elements;
 
   btn.disabled = false;
   input.disabled = false;
@@ -137,13 +137,10 @@ function handleFormError(elements, errorCode, i18nT) {
   feedback.classList.add('text-danger');
   feedback.classList.remove('text-success');
   feedback.textContent = i18nT(`errors.${errorCode.replace(' ', '')}`);
-  resetForm(form);
 }
 
 function handleFormSuccess(elements, i18nT) {
-  const {
-    feedback, btn, input, form,
-  } = elements;
+  const { feedback, btn, input, form } = elements;
 
   btn.disabled = false;
   input.disabled = false;
@@ -181,7 +178,6 @@ function handleFormStatus(elements, initialState, formState, i18nT) {
 
 const render = (elements, initialState, i18nT) => (path, value) => {
   switch (path) {
-    case 'form.status':
     case 'form.error':
       handleFormStatus(elements, initialState, value, i18nT);
       break;
@@ -200,7 +196,8 @@ const render = (elements, initialState, i18nT) => (path, value) => {
       break;
 
     default:
-      throw new Error('unknown path');
+      handleFormStatus(elements, initialState, value, i18nT);
+      break;
   }
 };
 

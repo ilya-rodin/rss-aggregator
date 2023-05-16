@@ -14,7 +14,7 @@ function validateUrl(url, otherUrls) {
   return schema.validate(url);
 }
 
-function getAllOriginsURL(url) {
+function addProxy(url) {
   const allOriginsURL = new URL('https://allorigins.hexlet.app/get');
   allOriginsURL.searchParams.set('disableCache', 'true');
   allOriginsURL.searchParams.set('url', url);
@@ -32,7 +32,7 @@ function refreshFeeds(state) {
 
   const promises = feeds.map((feed) => {
     const { link } = feed;
-    const allOriginsURL = getAllOriginsURL(link);
+    const allOriginsURL = addProxy(link);
     return axios
       .get(allOriginsURL)
       .then((response) => {
@@ -45,7 +45,7 @@ function refreshFeeds(state) {
         }
       })
       .catch((error) => {
-        state.form.error = error.message;
+        console.error(error.message);
       });
   });
 
@@ -102,15 +102,10 @@ function runApp() {
 
       const watchedState = onChange(
         initialState,
-        render(elements, initialState, i18nT),
+        render(elements, initialState, i18nT)
       );
 
       refreshFeeds(watchedState);
-
-      elements.form.addEventListener('input', () => {
-        watchedState.form.status = 'filling';
-        watchedState.form.error = null;
-      });
 
       elements.form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -122,7 +117,7 @@ function runApp() {
         validateUrl(url, links)
           .then((link) => {
             watchedState.form.status = 'sending';
-            const allOriginsURL = getAllOriginsURL(link);
+            const allOriginsURL = addProxy(link);
             return axios.get(allOriginsURL);
           })
           .then((response) => {
