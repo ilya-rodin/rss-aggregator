@@ -1,13 +1,10 @@
 function parse(xml) {
+  if (!xml) {
+    throw new Error('parsingError');
+  }
+
   const domParser = new DOMParser();
   const parsedDOM = domParser.parseFromString(xml, 'application/xml');
-
-  const parsingError = parsedDOM.querySelector('parsererror');
-
-  if (parsingError) {
-    const error = new Error(parsingError.textContent);
-    throw error;
-  }
 
   const channel = parsedDOM.querySelector('channel');
   const title = channel.querySelector('title').textContent;
