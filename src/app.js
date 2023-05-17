@@ -132,7 +132,12 @@ function runApp() {
             watchedState.form.status = 'finished';
           })
           .catch((error) => {
-            const errorCode = error.message;
+            let errorCode;
+            if (error.isAxiosError) {
+              errorCode = 'networkError';
+            } else {
+              errorCode = error.message;
+            }
             watchedState.form.error = errorCode;
             watchedState.form.status = 'failed';
           });
