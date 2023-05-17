@@ -23,12 +23,12 @@ function addProxy(url) {
 
 function addPosts(state, posts) {
   const newPostsWithId = posts.map((post) => ({ ...post, id: uniqueId() }));
-  state.content.posts = [...newPostsWithId, ...state.content.posts];
+  state.loadingProcess.posts = [...newPostsWithId, ...state.loadingProcess.posts];
 }
 
 function refreshFeeds(state) {
-  const { feeds } = state.content;
-  const oldPosts = state.content.posts;
+  const { feeds } = state.loadingProcess;
+  const oldPosts = state.loadingProcess.posts;
 
   const promises = feeds.map((feed) => {
     const { link } = feed;

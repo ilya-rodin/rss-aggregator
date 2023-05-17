@@ -24,7 +24,7 @@ function renderFeeds(elements, state, i18nT) {
   const cardList = document.createElement('ul');
   cardList.classList.add('list-group', 'border-0', 'rounder-0');
 
-  state.content.feeds.forEach((feed) => {
+  state.loadingProcess.feeds.forEach((feed) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'border-0', 'border-end-0');
 
@@ -63,7 +63,7 @@ function renderPosts(elements, state, i18nT) {
   const cardList = document.createElement('ul');
   cardList.classList.add('list-group', 'border-0', 'rounder-0');
 
-  state.content.posts.forEach((post) => {
+  state.loadingProcess.posts.forEach((post) => {
     const li = document.createElement('li');
     li.classList.add(
       'list-group-item',
@@ -105,7 +105,7 @@ function renderPosts(elements, state, i18nT) {
 
 function renderModal(elements, state, modalId) {
   const { modal } = elements;
-  const post = state.content.posts.find(({ id }) => id === modalId);
+  const post = state.loadingProcess.posts.find(({ id }) => id === modalId);
   const { title, description, link } = post;
   modal.title.textContent = title;
   modal.body.textContent = description;
@@ -182,11 +182,11 @@ const render = (elements, initialState, i18nT) => (path, value) => {
       handleFormStatus(elements, initialState, value, i18nT);
       break;
 
-    case 'content.feeds':
+    case 'loadingProcess.feeds':
       renderFeeds(elements, initialState, i18nT);
       break;
 
-    case 'content.posts':
+    case 'loadingProcess.posts':
     case 'ui.visitedIds':
       renderPosts(elements, initialState, i18nT);
       break;
