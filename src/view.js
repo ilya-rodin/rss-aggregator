@@ -71,7 +71,7 @@ function renderPosts(elements, state, i18nT) {
       'justify-content-between',
       'align-items-start',
       'border-0',
-      'border-end-0'
+      'border-end-0',
     );
 
     const link = document.createElement('a');
@@ -79,7 +79,7 @@ function renderPosts(elements, state, i18nT) {
     link.classList.add(
       state.ui.visitedIds.includes(post.id)
         ? ('fw-normal', 'link-secondary')
-        : 'fw-bold'
+        : 'fw-bold',
     );
 
     link.setAttribute('data-id', post.id);

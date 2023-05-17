@@ -67,10 +67,10 @@ function runApp() {
     .then((i18nT) => {
       const initialState = {
         form: {
-          status: 'filling',
           error: null,
         },
-        content: {
+        loadingProcess: {
+          status: 'filling',
           feeds: [],
           posts: [],
         },
@@ -102,7 +102,7 @@ function runApp() {
 
       const watchedState = onChange(
         initialState,
-        render(elements, initialState, i18nT)
+        render(elements, initialState, i18nT),
       );
 
       refreshFeeds(watchedState);
@@ -112,24 +112,24 @@ function runApp() {
 
         const formData = new FormData(elements.form);
         const url = formData.get('url');
-        const links = watchedState.content.feeds.map(({ link }) => link);
+        const links = watchedState.loadingProcess.feeds.map(({ link }) => link);
 
         validateUrl(url, links)
           .then((link) => {
-            watchedState.form.status = 'sending';
+            watchedState.loadingProcess.status = 'sending';
             const allOriginsURL = addProxy(link);
             return axios.get(allOriginsURL);
           })
           .then((response) => {
             const rssXML = response.data.contents;
             const { feed, posts } = parse(rssXML);
-            watchedState.content.feeds.push({
+            watchedState.loadingProcess.feeds.push({
               ...feed,
               id: uniqueId(),
               link: url,
             });
             addPosts(watchedState, posts);
-            watchedState.form.status = 'finished';
+            watchedState.loadingProcess.status = 'finished';
           })
           .catch((error) => {
             let errorCode;
@@ -139,7 +139,7 @@ function runApp() {
               errorCode = error.message;
             }
             watchedState.form.error = errorCode;
-            watchedState.form.status = 'failed';
+            watchedState.loadingProcess.status = 'failed';
           });
       });
 
