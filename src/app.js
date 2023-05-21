@@ -23,12 +23,12 @@ function addProxy(url) {
 
 function addPosts(state, posts) {
   const newPostsWithId = posts.map((post) => ({ ...post, id: uniqueId() }));
-  state.loadingProcess.posts = [...newPostsWithId, ...state.loadingProcess.posts];
+  state.posts = [...newPostsWithId, ...state.posts];
 }
 
 function refreshFeeds(state) {
-  const { feeds } = state.loadingProcess;
-  const oldPosts = state.loadingProcess.posts;
+  const { feeds } = state;
+  const oldPosts = state.posts;
 
   const promises = feeds.map((feed) => {
     const { link } = feed;
@@ -71,13 +71,13 @@ function runApp() {
         },
         loadingProcess: {
           status: 'filling',
-          feeds: [],
-          posts: [],
         },
         ui: {
           modalId: null,
           visitedIds: [],
         },
+        feeds: [],
+        posts: [],
       };
 
       const elements = {
@@ -112,7 +112,7 @@ function runApp() {
 
         const formData = new FormData(elements.form);
         const url = formData.get('url');
-        const links = watchedState.loadingProcess.feeds.map(({ link }) => link);
+        const links = watchedState.feeds.map(({ link }) => link);
 
         validateUrl(url, links)
           .then((link) => {
@@ -123,7 +123,7 @@ function runApp() {
           .then((response) => {
             const rssXML = response.data.contents;
             const { feed, posts } = parse(rssXML);
-            watchedState.loadingProcess.feeds.push({
+            watchedState.feeds.push({
               ...feed,
               id: uniqueId(),
               link: url,
