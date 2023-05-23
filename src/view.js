@@ -112,7 +112,7 @@ function renderModal(elements, state, modalId) {
   modal.btn.href = link;
 }
 
-function handleFormFilling(elements) {
+function handleFilling(elements) {
   const { feedback, input } = elements;
 
   input.classList.remove('is-invalid');
@@ -121,13 +121,13 @@ function handleFormFilling(elements) {
   feedback.textContent = null;
 }
 
-function handleFormSending(elements) {
+function handleValidating(elements) {
   const { btn, input } = elements;
   btn.disabled = true;
   input.disabled = true;
 }
 
-function handleFormError(elements, errorCode, i18nT) {
+function handleError(elements, errorCode, i18nT) {
   const { feedback, btn, input } = elements;
 
   btn.disabled = false;
@@ -139,7 +139,7 @@ function handleFormError(elements, errorCode, i18nT) {
   feedback.textContent = i18nT(`errors.${errorCode}`);
 }
 
-function handleFormSuccess(elements, i18nT) {
+function handleSuccessLoad(elements, i18nT) {
   const { feedback, btn, input, form } = elements;
 
   btn.disabled = false;
@@ -153,22 +153,19 @@ function handleFormSuccess(elements, i18nT) {
   resetForm(form);
 }
 
-function handleFormStatus(elements, initialState, formState, i18nT) {
-  switch (formState) {
+function handleStatus(elements, status, i18nT) {
+  switch (status) {
     case 'filling':
-      handleFormFilling(elements);
+    case 'loading':
+      handleFilling(elements);
       break;
 
-    case 'sending':
-      handleFormSending(elements);
+    case 'validating':
+      handleValidating(elements);
       break;
 
-    case 'finished':
-      handleFormSuccess(elements, i18nT);
-      break;
-
-    case 'failed':
-      handleFormError(elements, initialState.form.error, i18nT);
+    case 'success':
+      handleSuccessLoad(elements, i18nT);
       break;
 
     default:
@@ -178,8 +175,17 @@ function handleFormStatus(elements, initialState, formState, i18nT) {
 
 const render = (elements, initialState, i18nT) => (path, value) => {
   switch (path) {
+    case 'form.status':
+    case 'loadingProcess.status':
+      handleStatus(elements, value, i18nT);
+      break;
+
     case 'form.error':
-      handleFormStatus(elements, initialState, value, i18nT);
+      handleError(elements, initialState.form.error, i18nT);
+      break;
+
+    case 'loadingProcess.error':
+      handleError(elements, initialState.loadingProcess.error, i18nT);
       break;
 
     case 'feeds':
@@ -196,7 +202,6 @@ const render = (elements, initialState, i18nT) => (path, value) => {
       break;
 
     default:
-      handleFormStatus(elements, initialState, value, i18nT);
       break;
   }
 };

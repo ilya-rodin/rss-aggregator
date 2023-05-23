@@ -4,7 +4,9 @@ function parse(xml) {
   const parsingError = parsedDOM.querySelector('parsererror');
 
   if (!xml || parsingError) {
-    throw new Error('parsingError');
+    const error = new Error(parsingError.textContent);
+    error.isParsingError = true;
+    throw error;
   }
 
   const channel = parsedDOM.querySelector('channel');

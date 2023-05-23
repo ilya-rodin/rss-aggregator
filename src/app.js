@@ -67,10 +67,12 @@ function runApp() {
     .then((i18nT) => {
       const initialState = {
         form: {
+          status: 'filling',
           error: null,
         },
         loadingProcess: {
-          status: 'filling',
+          status: 'loading',
+          error: null,
         },
         ui: {
           modalId: null,
@@ -116,7 +118,7 @@ function runApp() {
 
         validateUrl(url, links)
           .then((link) => {
-            watchedState.loadingProcess.status = 'sending';
+            watchedState.form.status = 'validating';
             const allOriginsURL = addProxy(link);
             return axios.get(allOriginsURL);
           })
@@ -129,17 +131,35 @@ function runApp() {
               link: url,
             });
             addPosts(watchedState, posts);
-            watchedState.loadingProcess.status = 'finished';
+            watchedState.loadingProcess.status = 'success';
+            watchedState.form.status = 'success';
           })
           .catch((error) => {
+            const mapping = {
+              form: (errorCode) => {
+                watchedState.form.error = errorCode;
+                watchedState.form.status = 'failed';
+              },
+              loadingProcess: (errorCode) => {
+                watchedState.loadingProcess.error = errorCode;
+                watchedState.loadingProcess.status = 'failed';
+              },
+            };
+
+            const errorType = error.isAxiosError || error.isParsingError
+              ? 'loadingProcess'
+              : 'form';
+
             let errorCode;
             if (error.isAxiosError) {
               errorCode = 'networkError';
+            } else if (error.isParsingError) {
+              errorCode = 'parsingError';
             } else {
               errorCode = error.message;
             }
-            watchedState.form.error = errorCode;
-            watchedState.loadingProcess.status = 'failed';
+
+            mapping[errorType](errorCode);
           });
       });
 
