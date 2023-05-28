@@ -18,7 +18,7 @@ function addProxy(url) {
   const allOriginsURL = new URL('https://allorigins.hexlet.app/get');
   allOriginsURL.searchParams.set('disableCache', 'true');
   allOriginsURL.searchParams.set('url', url);
-  return allOriginsURL;
+  return allOriginsURL.toString();
 }
 
 function addPosts(state, posts) {
@@ -30,23 +30,22 @@ function refreshFeeds(state) {
   const { feeds } = state;
   const oldPosts = state.posts;
 
-  const promises = feeds.map((feed) => {
+  const promises = feeds.map(async (feed) => {
     const { link } = feed;
     const allOriginsURL = addProxy(link);
-    return axios
-      .get(allOriginsURL)
-      .then((response) => {
-        const rss = response.data.contents;
-        const { posts } = parse(rss);
-        const oldLinks = oldPosts.map((post) => post.link);
-        const newPosts = posts.filter((post) => !oldLinks.includes(post.link));
-        if (newPosts.length > 0) {
-          addPosts(state, newPosts);
-        }
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    try {
+      const response = await axios
+        .get(allOriginsURL);
+      const rss = response.data.contents;
+      const { posts } = parse(rss);
+      const oldLinks = oldPosts.map((post) => post.link);
+      const newPosts = posts.filter((post) => !oldLinks.includes(post.link));
+      if (newPosts.length > 0) {
+        addPosts(state, newPosts);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   });
 
   Promise.all(promises).finally(() => {
